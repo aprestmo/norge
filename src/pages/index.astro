@@ -1,0 +1,20 @@
+---
+import Fylker from '../components/Fylker.astro';
+import Kommuner from '../components/Kommuner.svelte';
+const title = 'Norske forvaltningsnivåer'
+---
+
+<html lang="nb-NO" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="container mx-auto my-8">
+      <h1 class="text-4xl font-bold">{title}</h1>
+      <Fylker client:load />
+      <Kommuner client:load />
+    </div>
+  </body>
+</html>
