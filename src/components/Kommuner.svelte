@@ -17,7 +17,7 @@
       <div class="flex border-2 p-4 gap-4 rounded-md">
         <img
           class="flex-shrink-0 w-16"
-          src="https://raw.githubusercontent.com/aprestmo/norske-kommune-fylkesvaapen/master/kommuner/{d.id}.svg"
+          src="https://raw.githubusercontent.com/aprestmo/norske-fylkes-kommunevaapen/master/kommuner/{d.id}.svg"
           alt={d.name_nb}
           loading="lazy"
         />
