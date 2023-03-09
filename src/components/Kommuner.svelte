@@ -31,6 +31,11 @@
             <dt>Målform:</dt>
             <dd>{d.language[0].toUpperCase() + d.language.slice(1)}</dd>
           </dl>
+          {#if d.prefix === 'TRUE'}
+            <a href="//www.{d.url}.kommune.no" target="_blank" rel="noreferer">Gå til nettside &rarr;</a>
+          {:else}
+            <a href="//{d.url}.kommune.no" target="_blank" rel="noreferer">Gå til nettside &rarr;</a>
+          {/if}
         </div>
       </div>
     {/each}
