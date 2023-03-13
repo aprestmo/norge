@@ -14,27 +14,31 @@
 {:then data}
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 flex-wrap">
     {#each data as d}
-      <div class="flex border-2 p-4 gap-4 rounded-md">
+      <div class="flex items-start border-2 p-4 gap-4 rounded-md">
         <img
-          class="flex-shrink-0 w-16"
+          class="flex-shrink-0 mt-1 w-16"
           src="https://raw.githubusercontent.com/aprestmo/norske-fylkes-kommunevaapen/master/kommuner/{d.id}.svg"
           alt={d.name_nb}
           loading="lazy"
         />
         <div class="flex flex-col">
           <h2 class="font-bold">{d.name_nb}</h2>
-          <dl class="grid gap-1 grid-cols-2">
+          <dl class="flex flex-wrap gap-1">
             <dt>Admin&shy;istra&shy;sjons&shy;senter:</dt>
             <dd>{d.adm_centre}</dd>
+          </dl>
+          <dl class="flex flex-wrap gap-1">
             <dt>Kommune&shy;nummer:</dt>
             <dd>{d.id}</dd>
+          </dl>
+          <dl class="flex flex-wrap gap-1">
             <dt>Målform:</dt>
             <dd>{d.language[0].toUpperCase() + d.language.slice(1)}</dd>
           </dl>
           {#if d.prefix === 'TRUE'}
-            <a href="//www.{d.url}.kommune.no" target="_blank" rel="noreferer">Gå til nettside &rarr;</a>
+            <a href="//www.{d.url}.kommune.no" target="_blank" rel="noreferer">www.{d.url}.kommune.no&nbsp;&rarr;</a>
           {:else}
-            <a href="//{d.url}.kommune.no" target="_blank" rel="noreferer">Gå til nettside &rarr;</a>
+            <a href="//{d.url}.kommune.no" target="_blank" rel="noreferer">{d.url}.kommune.no&nbsp;&rarr;</a>
           {/if}
         </div>
       </div>
