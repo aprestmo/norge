@@ -10,7 +10,7 @@
 <h2 class="text-2xl my-4">Kommuner</h2>
 
 {#await fetchData}
-  <p>Laster&hellip;</p>
+  <p class="loading">Laster&hellip;</p>
 {:then data}
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 flex-wrap">
     {#each data as d}
@@ -47,3 +47,17 @@
 {:catch error}
   <p>An error occurred!</p>
 {/await}
+
+<style>
+@keyframes loading {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.loading {
+  animation: 800ms linear loading alternate-reverse both infinite;
+}
+</style>
