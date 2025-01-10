@@ -3,46 +3,96 @@ const response = await fetch(
   "https://opensheet.elk.sh/1c0GORGfO4BWbS5y2lrZTmyUWMv47_ggGCG-eTKJ1GJw/Kommuner"
 );
 const data = await response.json();
+
+// Filter out unwanted municipalities except 301
+const filteredData = data.filter(d => {
+  if (d.id === "301") return true;
+  const prefix = d.id.substring(0, 2);
+  return !["30", "38", "54"].includes(prefix);
+});
+
+// Sort the filtered data, placing 301 first
+const sortedData = filteredData.sort((a, b) => {
+  if (a.id === "301") return -1;
+  if (b.id === "301") return 1;
+  return a.id.localeCompare(b.id);
+});
+
+// Map of county prefixes to names
+const countyNames: Record<string, string> = {
+  "301": "Oslo",
+  "03": "Oslo",
+  "11": "Rogaland",
+  "15": "Møre og Romsdal",
+  "18": "Nordland",
+  "21": "Svalbard",
+  "30": "Viken",
+  "34": "Innlandet",
+  "38": "Vestfold og Telemark",
+  "42": "Agder",
+  "46": "Vestland",
+  "50": "Trøndelag",
+  "54": "Troms og Finnmark"
+};
+
+// Function to get the prefix group
+const getPrefixGroup = (id: string) => {
+  if (id === "301") return "301";
+  return id.substring(0, 2);
+};
 ---
 
 <h2 class="text-2xl my-4">Kommuner</h2>
 
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 flex-wrap">
   {
-    data.map((d) => (
-      <div class="flex items-start border-2 p-4 gap-4 rounded-md">
-        <img
-          class="flex-shrink-0 mt-1 w-16"
-          src={`https://raw.githubusercontent.com/aprestmo/norske-fylkes-kommunevaapen/master/kommuner/${d.id}.svg`}
-          alt={d.name_nb}
-          loading="lazy"
-        />
-        <div class="flex flex-col">
-          <h2 class="font-bold">{d.name_nb}</h2>
-          <dl class="flex flex-wrap gap-1">
-            <dt>Admin&shy;istra&shy;sjons&shy;senter:</dt>
-            <dd>{d.adm_centre}</dd>
-          </dl>
-          <dl class="flex flex-wrap gap-1">
-            <dt>Kommune&shy;nummer:</dt>
-            <dd>{d.id}</dd>
-          </dl>
-          <dl class="flex flex-wrap gap-1">
-            <dt>Målform:</dt>
-            <dd>{d.language[0].toUpperCase() + d.language.slice(1)}</dd>
-          </dl>
-          {d.prefix === 'TRUE' ? (
-            <a href={`//www.${d.url}.kommune.no`} target="_blank" rel="noopener">
-              www.{d.url}.kommune.no →
-            </a>
-          ) : (
-            <a href={`//${d.url}.kommune.no`} target="_blank" rel="noopener">
-              {d.url}.kommune.no →
-            </a>
+    sortedData.map((d, index) => {
+      const currentGroup = getPrefixGroup(d.id);
+      const previousGroup = index > 0 ? getPrefixGroup(sortedData[index - 1].id) : null;
+      const showHeader = index === 0 || (previousGroup && currentGroup !== previousGroup);
+
+      return (
+        <>
+          {showHeader && (
+            <h3 class="col-span-full text-xl font-bold mt-8 mb-4">
+              {countyNames[currentGroup]}
+            </h3>
           )}
-        </div>
-      </div>
-    ))
+          <div class="flex items-start border-2 p-4 gap-4 rounded-md">
+            <img
+              class="flex-shrink-0 mt-1 w-16"
+              src={`https://raw.githubusercontent.com/aprestmo/norske-fylkes-kommunevaapen/master/kommuner/${d.id}.svg`}
+              alt={d.name_nb}
+              loading="lazy"
+            />
+            <div class="flex flex-col">
+              <h2 class="font-bold">{d.name_nb}</h2>
+              <dl class="flex flex-wrap gap-1">
+                <dt>Admin&shy;istra&shy;sjons&shy;senter:</dt>
+                <dd>{d.adm_centre}</dd>
+              </dl>
+              <dl class="flex flex-wrap gap-1">
+                <dt>Kommune&shy;nummer:</dt>
+                <dd>{d.id}</dd>
+              </dl>
+              <dl class="flex flex-wrap gap-1">
+                <dt>Målform:</dt>
+                <dd>{d.language[0].toUpperCase() + d.language.slice(1)}</dd>
+              </dl>
+              {d.prefix === 'TRUE' ? (
+                <a href={`//www.${d.url}.kommune.no`} target="_blank" rel="noopener">
+                  www.{d.url}.kommune.no →
+                </a>
+              ) : (
+                <a href={`//${d.url}.kommune.no`} target="_blank" rel="noopener">
+                  {d.url}.kommune.no →
+                </a>
+              )}
+            </div>
+          </div>
+        </>
+      );
+    })
   }
 </div>
 
