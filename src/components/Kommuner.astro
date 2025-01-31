@@ -20,19 +20,25 @@ const sortedData = filteredData.sort((a, b) => {
 
 // Map of county prefixes to names
 const countyNames: Record<string, string> = {
-  "301": "Oslo",
   "03": "Oslo",
   "11": "Rogaland",
   "15": "Møre og Romsdal",
   "18": "Nordland",
   "21": "Svalbard",
   "30": "Viken",
+  "31": "Østfold",
+  "32": "Akershus",
+  "33": "Buskerud",
   "34": "Innlandet",
   "38": "Vestfold og Telemark",
+  "39": "Vestfold",
+  "40": "Telemark",
   "42": "Agder",
   "46": "Vestland",
   "50": "Trøndelag",
-  "54": "Troms og Finnmark"
+  "54": "Troms og Finnmark",
+  "55": "Troms",
+  "56": "Finnmark",
 };
 
 // Function to get the prefix group
@@ -95,17 +101,3 @@ const getPrefixGroup = (id: string) => {
     })
   }
 </div>
-
-<style>
-  @keyframes loading {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  .loading {
-    animation: 800ms linear loading alternate-reverse both infinite;
-  }
-</style>
